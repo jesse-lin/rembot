@@ -1,12 +1,30 @@
 import discord
 import os
+import sys
 
-class MyClient(discord.Client):
-    async def on_ready(self):
-        print('Logged on as {0}!'.format(self.user))
+sys.path.append('/home/jesse/projects/rembot')
 
-    async def on_message(self, message):
-        print('Message from {0.author}: {0.content}'.format(message))
+from variables import TOKEN
 
-client = MyClient()
-client.run('NjEyMzQxNzE3OTY1OTk2MDQ0.XqoPKQ.Ew_iikAHJGpsEWFLpbPonEVAzdw')
+BOT_PREFIX = '!'
+
+client = discord.Client()
+
+@client.event
+async def on_message(message):
+    if message.author == client.user:
+        return
+    print(f'Message from {message.author}: {message.content}')
+
+    if message.content.startswith('!hello'):
+        msg = f'Hello {message.author.mention}'
+        await message.channel.send(msg)
+
+@client.event
+async def on_ready():
+    print('Logged in as')
+    print(client.user.name)
+    print(client.user.id)
+    print('-------')
+
+client.run(TOKEN)
