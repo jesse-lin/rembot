@@ -8,7 +8,7 @@ from functions import basic_functions
 
 BOT_PREFIX = '!'
 
-bot = commands.Bot(command_prefix=BOT_PREFIX, description='RemBot')
+bot = commands.Bot(command_prefix=BOT_PREFIX, description='A discord bot designed with simple commands.')
 bot.add_cog(basic_functions.Basic(bot))
 
 
