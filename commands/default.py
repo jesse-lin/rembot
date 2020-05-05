@@ -5,7 +5,7 @@ from discord.ext import commands
 
 sys.path.append('/home/jesse/projects/rembot')
 
-class Basic(commands.Cog):
+class Default(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
