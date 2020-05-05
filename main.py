@@ -25,7 +25,7 @@ async def on_message(message):
         return
 
     if message.content == f'<@!{bot.user.id}>':
-        botinfo.about(bot, message)
+        await botinfo.about(bot, message)
 
     await bot.process_commands(message)
 
