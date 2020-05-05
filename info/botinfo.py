@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import json
 
 async def about(bot, message):
     embed = discord.Embed(title="RemBot", description=bot.description)
