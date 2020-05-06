@@ -13,6 +13,7 @@ BOT_PREFIX = '!'
 
 bot = commands.Bot(command_prefix=BOT_PREFIX, description='A discord bot designed with simple commands.')
 bot.add_cog(default.Default(bot))
+bot.add_cog(botinfo.BotInfo(bot))
 
 @bot.event
 async def on_ready():

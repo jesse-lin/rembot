@@ -12,3 +12,19 @@ async def about(bot, message):
 
     await message.channel.send(content="About me:", embed=embed)
 
+class BotInfo(commands.Cog):
+    def __init__(self, bot):
+        self.bot = bot
+        self._last_member = None
+    
+    @commands.command()
+    async def commands(self, ctx, *, str1: str = None):
+        # if str1==None:
+        #     await ctx.send('hello there')
+        # else:
+        #     await ctx.send(f'hello {str1}')
+        with open('botinfo.json') as f:
+            try:
+                data = json.load(f)
+            except ValueError:
+                data = dict()
