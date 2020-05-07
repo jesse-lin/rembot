@@ -7,6 +7,8 @@ import datetime
 def check_json(bot, file):
     try:
         data = json.load(file)
+        data['info']['Server count'] = len(bot.guilds)
+        data['info']['Last accessed'] = datetime.datetime.now().isoformat()
     except ValueError:
         data = dict()
         info = dict()
@@ -20,8 +22,6 @@ def check_json(bot, file):
         data['thumbnail'] = "https://i.imgur.com/oNUY7dx.jpg"
         data['commands'] = dict()
         json.dump(data, file, indent=4)
-    info['Server count'] = len(bot.guilds)
-    info['Last accessed'] = datetime.datetime.now().isoformat()
     output = json.dumps(data)
     return output
 
