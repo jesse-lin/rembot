@@ -8,31 +8,35 @@ from variables import FILEPATH
 
 # sys.path.append(FILEPATH)
 
-def check_json(bot):
-    try:
-        file = open(f'{FILEPATH}/data/bot.json', 'w+')
-        data = json.load(file)
-        data['info']['Server count'] = len(bot.guilds)
-        data['info']['Last accessed'] = datetime.datetime.now().isoformat()
-    except ValueError:
-        data = dict()
-        info = dict()
-        data['Title'] = 'RemBot'
-        data['Description'] = bot.description
-        info['Author'] = '<@260913181734469655>'
-        info['Server count'] = len(bot.guilds)
-        info['Date created'] = datetime.datetime(2020, 4, 30, 17, 55, 000000).isoformat()
-        info['Last accessed'] = datetime.datetime.now().isoformat()
-        data['info'] = info
-        data['thumbnail'] = "https://i.imgur.com/oNUY7dx.jpg"
-        data['commands'] = dict()
-        json.dump(data, file, indent=4)
-    output = json.dumps(data)
-    return output
+def check_json(bot, fp):
+    if os.path.exists(fp):
+        with open(fp, 'r') as f:
+            data = json.load(f)
+            data['info']['Server count'] = len(bot.guilds)
+            data['info']['Last accessed'] = datetime.datetime.now().isoformat()
+        with open(fp, 'w') as f:    
+            json.dump(data, f, indent=4)
+    else:
+        with open(fp, 'w+') as f:
+            data = dict()
+            info = dict()
+            data['Title'] = 'RemBot'
+            data['Description'] = bot.description
+            info['Author'] = '<@260913181734469655>'
+            info['Server count'] = len(bot.guilds)
+            info['Date created'] = datetime.datetime(2020, 4, 30, 17, 55, 000000).isoformat()
+            info['Last accessed'] = datetime.datetime.now().isoformat()
+            data['info'] = info
+            data['thumbnail'] = "https://i.imgur.com/oNUY7dx.jpg"
+            data['commands'] = dict()
+            json.dump(data, f, indent=4)
+        
+        
 
-
-async def about(str1: str, message):
-    data = json.loads(str1)
+async def about(message):
+    f = open(f'{FILEPATH}/data/bot.json', 'r')
+    data = json.load(f)
+    f.close()
     embed = discord.Embed(title=data['Title'], description=data['Description'])
     embed.set_thumbnail(url=data['thumbnail'])
     for key in data['info']:
@@ -49,7 +53,9 @@ class BotInfo(commands.Cog):
     
     @commands.command()
     async def commands(self, ctx, *, str1: str=None):
-        data = json.loads(check_json(self.bot))
+        f = open(f'{FILEPATH}/data/bot.json', 'r')
+        data = json.load(f)
+        f.close()
         if str1==None:
             if len(data['commands']) == 0:
                 await ctx.send(':warning: **There are currently no commands in this bot**')
@@ -66,6 +72,6 @@ class BotInfo(commands.Cog):
                 embed = discord.Embed(title=str1)
                 embed.set_thumbnail(url=data['thumbnail'])
                 for key in data['commands'][f'{str1}']:
-                    embed.add_field(name=f'{key}', value=data['commands'][f'{str1}'][key])
+                    embed.add_field(name=f'{key}', value=data['commands'][f'{str1}'][key], inline=False)
                 await ctx.send(embed=embed)
 
