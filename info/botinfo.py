@@ -1,11 +1,16 @@
 import discord
 from discord.ext import commands
 import json
+import sys
 import os
 import datetime
+from variables import FILEPATH
 
-def check_json(bot, file):
+# sys.path.append(FILEPATH)
+
+def check_json(bot):
     try:
+        file = open(f'{FILEPATH}/data/bot.json', 'w+')
         data = json.load(file)
         data['info']['Server count'] = len(bot.guilds)
         data['info']['Last accessed'] = datetime.datetime.now().isoformat()
@@ -33,6 +38,7 @@ async def about(str1: str, message):
     for key in data['info']:
         embed.add_field(name=f'{key}', value=data['info'][f'{key}'], inline=False)
         # embed.set_image(url="https://i.imgur.com/oNUY7dx.jpg")
+    embed.add_field(name='For more info:', value = "Type '!commands' to see commands", inline=False)
 
     await message.channel.send(content="About me:", embed=embed)
 
@@ -42,13 +48,24 @@ class BotInfo(commands.Cog):
         self._last_member = None
     
     @commands.command()
-    async def commands(self, ctx, *, str1: str = None):
-        # if str1==None:
-        #     await ctx.send('hello there')
-        # else:
-        #     await ctx.send(f'hello {str1}')
-        with open('botinfo.json') as f:
-            try:
-                data = json.load(f)
-            except ValueError:
-                data = dict()
+    async def commands(self, ctx, *, str1: str=None):
+        data = json.loads(check_json(self.bot))
+        if str1==None:
+            if len(data['commands']) == 0:
+                await ctx.send(':warning: **There are currently no commands in this bot**')
+            else:
+                embed = discord.Embed(title='List of bot commands', description='')
+                embed.set_thumbnail(url=data['thumbnail'])
+                for key in data['commands']:
+                    embed.add_field(name=f'{key}', value=data['commands'][f'{key}']['Description'], inline=False)
+                await ctx.send(embed=embed)
+        else:
+            if str1 not in data['commands']:
+                await ctx.send(f':no_entry_sign: **The command "{str1}" does not exist**')
+            else:
+                embed = discord.Embed(title=str1)
+                embed.set_thumbnail(url=data['thumbnail'])
+                for key in data['commands'][f'{str1}']:
+                    embed.add_field(name=f'{key}', value=data['commands'][f'{str1}'][key])
+                await ctx.send(embed=embed)
+
