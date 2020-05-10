@@ -49,3 +49,40 @@ class Fun(commands.Cog):
                 "You may rely on it."
             ]
             await ctx.send(f'{random.choice(possible_responses)}')
+
+    @commands.command()
+    async def jiahang(self, ctx, str1: str=None):
+        with open(f'{FILEPATH}/data/bot.json', 'r') as f:
+            data = json.load(f)
+        if 'jiahang' not in data['commands']:
+            info = dict()
+            info['Name'] = 'jiahang'
+            info['Description'] = 'Magic 8ball, Jia Hang edition.'
+            info['Usage'] = '!jiahang\n!jiahang <question>'
+            data['commands']['jiahang'] = info
+            with open(f'{FILEPATH}/data/bot.json', 'w') as f:
+                json.dump(data, f, indent=4)
+        if str1 == None:
+            possible_responses = [
+                'Huh wus happenin',
+                'Morris code',
+                "How y'all corn teen",
+                "The pill ain't workin"
+            ]
+            await ctx.send(f'{random.choice(possible_responses)}')
+        else:
+            possible_responses = [
+                'Das a goodass question',
+                'Das beyonnd me',
+                'This shit stressful',
+                'Ye ye das how it be',
+                'Yessuh',
+                'Nosuh',
+                "Yeah I'm pretty sure",
+                'I was wondering dat too',
+                'Ye man you do you',
+                "I ain't gon act like I know",
+                'Aal iz wel',
+                'It is what it is'
+            ]
+            await ctx.send(f'{random.choice(possible_responses)}')
