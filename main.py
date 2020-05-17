@@ -5,7 +5,7 @@ from discord.ext import commands
 
 from variables import TOKEN, FILEPATH
 from commands import defaultcommands, funcommands
-from info import botinfo, meminfo
+from info import botinfo, stocks, todo
 from utils import default
 
 BOT_PREFIX = '!'
@@ -15,7 +15,8 @@ bot = commands.Bot(command_prefix=BOT_PREFIX, description='A discord bot designe
 bot.add_cog(defaultcommands.Default(bot))
 bot.add_cog(funcommands.Fun(bot))
 bot.add_cog(botinfo.BotInfo(bot))
-bot.add_cog(meminfo.MemInfo(bot))
+bot.add_cog(stocks.Stocks(bot))
+bot.add_cog(todo.Todo(bot))
 
 
 @bot.event

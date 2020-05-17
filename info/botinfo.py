@@ -16,8 +16,8 @@ def set_defaults(bot, fp):
             data['Description'] = bot.description
             info['Author'] = '<@260913181734469655>'
             info['Server count'] = len(bot.guilds)
-            info['Date created'] = datetime.datetime(2020, 4, 30, 17, 55, 000000).isoformat()
-            info['Last updated'] = datetime.datetime.now().isoformat()
+            info['Date created'] = datetime.datetime(2020, 5, 1, 17, 55).strftime("%Y-%m-%d %H:%M:%S")
+            info['Last updated'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             data['info'] = info
             data['thumbnail'] = "https://i.imgur.com/oNUY7dx.jpg"
             data['commands'] = dict()

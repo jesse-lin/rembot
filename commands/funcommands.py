@@ -13,7 +13,7 @@ class Fun(commands.Cog):
         self._last_member = None
 
     @commands.command(name='8ball')
-    async def eight_ball(self, ctx, str1: str=None):
+    async def eight_ball(self, ctx, kwargs: str=None):
         with open(f'{FILEPATH}/data/bot.json', 'r') as f:
             data = json.load(f)
         if '8ball' not in data['commands']:
@@ -24,7 +24,7 @@ class Fun(commands.Cog):
             data['commands']['8ball'] = info
             with open(f'{FILEPATH}/data/bot.json', 'w') as f:
                 json.dump(data, f, indent=4)
-        if str1 == None:
+        if kwargs == None:
             await ctx.send(f':no_entry_sign: **Please ask a question.**')
         else:
             possible_responses = [
@@ -51,7 +51,7 @@ class Fun(commands.Cog):
             await ctx.send(f'{random.choice(possible_responses)}')
 
     @commands.command()
-    async def jiahang(self, ctx, str1: str=None):
+    async def jiahang(self, ctx, kwargs: str=None):
         with open(f'{FILEPATH}/data/bot.json', 'r') as f:
             data = json.load(f)
         if 'jiahang' not in data['commands']:
@@ -62,7 +62,7 @@ class Fun(commands.Cog):
             data['commands']['jiahang'] = info
             with open(f'{FILEPATH}/data/bot.json', 'w') as f:
                 json.dump(data, f, indent=4)
-        if str1 == None:
+        if kwargs == None:
             possible_responses = [
                 'Huh wus happenin',
                 'Morris code',
@@ -86,6 +86,6 @@ class Fun(commands.Cog):
                 'Aal iz wel',
                 'It is what it is',
                 'When it rains it pours',
-                "See that question is just a suggestion"
+                "See that's just a suggestion"
             ]
             await ctx.send(f'{random.choice(possible_responses)}')
