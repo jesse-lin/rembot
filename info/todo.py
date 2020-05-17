@@ -64,7 +64,7 @@ class Todo(commands.Cog):
         if 'todo' not in data['commands']:
             info = dict()
             info['Name'] = 'todo'
-            info['Description'] = 'A personalized task list for members to utilize.'
+            info['Description'] = 'A personalized todo list for members to utilize.'
             usage = "!todo\n" \
                 "!todo add <todo item>\n" \
                 "!todo delete <single index as integer value>"

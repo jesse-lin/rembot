@@ -19,7 +19,7 @@ def set_defaults(bot, fp):
             info['Date created'] = datetime.datetime(2020, 5, 1, 17, 55).strftime("%Y-%m-%d %H:%M:%S")
             info['Last updated'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             data['info'] = info
-            data['thumbnail'] = "https://i.imgur.com/oNUY7dx.jpg"
+            data['thumbnail'] = f'{bot.user.avatar_url}'
             data['commands'] = dict()
             json.dump(data, f, indent=4)        
         
@@ -32,7 +32,6 @@ async def about(message):
     embed.set_thumbnail(url=data['thumbnail'])
     for key in data['info']:
         embed.add_field(name=f'{key}', value=data['info'][f'{key}'], inline=False)
-        # embed.set_image(url="https://i.imgur.com/oNUY7dx.jpg")
     embed.add_field(name='Repository link', value = 'https://github.com/jesse-lin/rembot', 
         inline=False)
     embed.add_field(name='For more commands', value = "Type '!commands' to see commands", 

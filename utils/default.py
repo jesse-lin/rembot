@@ -15,6 +15,7 @@ def update_bot(bot):
             data = json.load(f)
             data['info']['Server count'] = len(bot.guilds)
             data['info']['Last updated'] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            data['thumbnail'] = f'{bot.user.avatar_url}'
         with open(fp, 'w') as f:    
             json.dump(data, f, indent=4)
     else:
