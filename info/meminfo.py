@@ -66,6 +66,7 @@ async def list_stocks(ctx, user, tickers):
     embed = discord.Embed(title=f"{ctx.author}'s list", 
         description=f":chart_with_upwards_trend: **A quick list of stock symbols "
                     f"for {ctx.author}**")
+    embed.set_thumbnail(url=ctx.author.avatar_url)
     for sym in tickers:
         str1 += f'{sym}\n'
     embed.add_field(name='Symbols', value=str1, inline=False)
