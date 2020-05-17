@@ -12,7 +12,7 @@ import datetime
 
 from variables import FILEPATH
 
-class Default(commands.Cog):
+class Basic(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self._last_member = None
@@ -58,7 +58,7 @@ class Default(commands.Cog):
             info = dict()
             info['Name'] = 'stock'
             info['Description'] = 'Shows 5-day history for stock symbols.'
-            info['Usage'] = '!stock <list of symbols separated by spaces>'
+            info['Usage'] = '!stock\n!stock <list of symbols separated by spaces>'
             data['commands']['stock'] = info
             with open(f'{FILEPATH}/data/bot.json', 'w') as f:
                 json.dump(data, f, indent=4)
@@ -84,7 +84,10 @@ class Default(commands.Cog):
                                 str1 += '$'
                             str1 += f'{info[key][val]}\n'
                         embed.add_field(name=key, value=str1, inline=False)
-                await ctx.send(embed=embed)
+                try:
+                    await ctx.send(embed=embed)
+                except discord.errors.HTTPException:
+                    await ctx.send(f':no_entry_sign: **Data not found for {ss}, try again.**')
 
 
     

@@ -58,7 +58,7 @@ class Fun(commands.Cog):
             info = dict()
             info['Name'] = 'jiahang'
             info['Description'] = 'Magic 8ball, Jia Hang edition.'
-            info['Usage'] = '!jiahang\n!jiahang <question>'
+            info['Usage'] = '!jiahang\n!jiahang <yes/no question>'
             data['commands']['jiahang'] = info
             with open(f'{FILEPATH}/data/bot.json', 'w') as f:
                 json.dump(data, f, indent=4)
@@ -67,7 +67,8 @@ class Fun(commands.Cog):
                 'Huh wus happenin',
                 'Morris code',
                 "How y'all corn teen",
-                "The pill ain't workin"
+                "The pill ain't workin",
+                "DABOILER DABOILER"
             ]
             await ctx.send(f'{random.choice(possible_responses)}')
         else:
@@ -83,6 +84,7 @@ class Fun(commands.Cog):
                 'Ye man you do you',
                 "I ain't gon act like I know",
                 'Aal iz wel',
-                'It is what it is'
+                'It is what it is',
+                'When it rains it pours'
             ]
             await ctx.send(f'{random.choice(possible_responses)}')

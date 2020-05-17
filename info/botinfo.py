@@ -8,16 +8,8 @@ from variables import FILEPATH
 
 # sys.path.append(FILEPATH)
 
-def check_json(bot, fp):
-    if os.path.exists(fp):
-        with open(fp, 'r') as f:
-            data = json.load(f)
-            data['info']['Server count'] = len(bot.guilds)
-            data['info']['Last accessed'] = datetime.datetime.now().isoformat()
-        with open(fp, 'w') as f:    
-            json.dump(data, f, indent=4)
-    else:
-        with open(fp, 'w+') as f:
+def set_defaults(bot, fp):
+    with open(fp, 'w+') as f:
             data = dict()
             info = dict()
             data['Title'] = 'RemBot'
@@ -25,12 +17,11 @@ def check_json(bot, fp):
             info['Author'] = '<@260913181734469655>'
             info['Server count'] = len(bot.guilds)
             info['Date created'] = datetime.datetime(2020, 4, 30, 17, 55, 000000).isoformat()
-            info['Last accessed'] = datetime.datetime.now().isoformat()
+            info['Last updated'] = datetime.datetime.now().isoformat()
             data['info'] = info
             data['thumbnail'] = "https://i.imgur.com/oNUY7dx.jpg"
             data['commands'] = dict()
-            json.dump(data, f, indent=4)
-        
+            json.dump(data, f, indent=4)        
         
 
 async def about(message):
@@ -42,7 +33,7 @@ async def about(message):
     for key in data['info']:
         embed.add_field(name=f'{key}', value=data['info'][f'{key}'], inline=False)
         # embed.set_image(url="https://i.imgur.com/oNUY7dx.jpg")
-    embed.add_field(name='For more info:', value = "Type '!commands' to see commands", inline=False)
+    embed.add_field(name='For more info', value = "Type '!commands' to see commands", inline=False)
 
     await message.channel.send(content="About me:", embed=embed)
 
