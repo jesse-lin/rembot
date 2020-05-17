@@ -33,7 +33,9 @@ async def about(message):
     for key in data['info']:
         embed.add_field(name=f'{key}', value=data['info'][f'{key}'], inline=False)
         # embed.set_image(url="https://i.imgur.com/oNUY7dx.jpg")
-    embed.add_field(name='For more info', value = "Type '!commands' to see commands", 
+    embed.add_field(name='Repository link', value = 'https://github.com/jesse-lin/rembot', 
+        inline=False)
+    embed.add_field(name='For more commands', value = "Type '!commands' to see commands", 
         inline=False)
 
     await message.channel.send(content="About me:", embed=embed)
