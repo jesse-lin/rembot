@@ -11,6 +11,7 @@ import lxml
 import datetime
 
 from variables import FILEPATH
+from info import meminfo
 
 class Basic(commands.Cog):
     def __init__(self, bot):
@@ -58,38 +59,69 @@ class Basic(commands.Cog):
             info = dict()
             info['Name'] = 'stock'
             info['Description'] = 'Shows 5-day history for stock symbols.'
-            info['Usage'] = '!stock\n!stock <list of symbols separated by spaces>'
+            info['Usage'] = '!stock\n!stock <list of symbols separated by spaces>\n!stock add <list of symbols separated by spaces>\n!stock delete <list of symbols separated by spaces>'
             data['commands']['stock'] = info
             with open(f'{FILEPATH}/data/bot.json', 'w') as f:
                 json.dump(data, f, indent=4)
+
+        with open(f'{FILEPATH}/data/mem.json', 'r') as fm:
+            mdata = json.load(fm)
+            user = f'{ctx.author.id}'
+
         if sym==None:
-            await ctx.send(f':no_entry_sign: **Please enter at least one symbol.**')
+            if user not in mdata:
+                mdata[user] = dict()
+            if 'stocks' not in mdata[user]:
+                mdata[user]['stocks'] = list()
+            if mdata[user]['stocks']:
+                await load_stocks(ctx, data, mdata[user]['stocks'])
+            else:
+                with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
+                    json.dump(mdata, fm, indent=4)
+                await ctx.send(f':no_entry_sign: **You have no stock symbols saved.**')
+
         else:
-            tickers = sym.split(" ")
-            for s in tickers:
-                ss = s.upper()
-                # stock = requests.get(f'https://query1.finance.yahoo.com/v7/finance/chart/{s.upper()}').json()
-                stock = yf.Ticker(ss)
-                info_json = f'{stock.history(period="5d").to_json()}'
-                info = json.loads(info_json)
-                embed = discord.Embed(title=ss, description = f':clock1: A 5-day history of {ss}')
-                embed.set_thumbnail(url=data['thumbnail'])
-                for key in info:
-                    if key != 'Dividends' and key != 'Stock Splits':
-                        str1 = ''
-                        for val in info[key]:
-                            newtime = datetime.date.fromtimestamp(int(val)/1e3).isoformat()
-                            str1 += f'**{newtime}:** '
-                            if key=='Open' or key=='High' or key=='Low' or key=='Close':
-                                str1 += '$'
-                            str1 += f'{info[key][val]}\n'
-                        embed.add_field(name=key, value=str1, inline=False)
-                try:
-                    await ctx.send(embed=embed)
-                except discord.errors.HTTPException:
-                    await ctx.send(f':no_entry_sign: **Data not found for {ss}, try again.**')
+            tickers = sym.split(' ')
+            if sym.startswith("add"):
+                tickers.pop(0)
+                if not(tickers):
+                    await ctx.send(':no_entry_sign: **Please enter at least one symbol to be added.**')
+                else:
+                    await meminfo.add_stocks(ctx, user, tickers)
+            elif sym.startswith("delete"):
+                tickers.pop(0)
+                if not(tickers):
+                    await ctx.send(':no_entry_sign: **Please enter at least one symbol to be added.**')
+                else:
+                    await meminfo.del_stocks(ctx, user, tickers)
+            else:
+                await load_stocks(ctx, data, tickers)
+            
+            
 
-
+async def load_stocks(ctx, data, tickers):
+    for s in tickers:
+        ss = s.upper()
+        # stock = requests.get(f'https://query1.finance.yahoo.com/v7/finance/chart/{s.upper()}').json()
+        stock = yf.Ticker(ss)
+        info_json = f'{stock.history(period="5d").to_json()}'
+        info = json.loads(info_json)
+        embed = discord.Embed(title=ss, description = f':clock1: A 5-day history of {ss}')
+        embed.set_thumbnail(url=data['thumbnail'])
+        for key in info:
+            if key != 'Dividends' and key != 'Stock Splits':
+                str1 = ''
+                for val in info[key]:
+                    newtime = datetime.date.fromtimestamp(int(val)/1e3).isoformat()
+                    str1 += f'**{newtime}:** '
+                    if key=='Open' or key=='High' or key=='Low' or key=='Close':
+                        str1 += '$'
+                    str1 += f'{info[key][val]}\n'
+                embed.add_field(name=key, value=str1, inline=False)
+        try:
+            await ctx.send(embed=embed)
+        except discord.errors.HTTPException:
+            await ctx.send(f':no_entry_sign: **Data not found for {ss}, try again.**')
     
 
     

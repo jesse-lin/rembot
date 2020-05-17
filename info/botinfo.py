@@ -48,7 +48,7 @@ class BotInfo(commands.Cog):
         data = json.load(f)
         f.close()
         if str1==None:
-            if len(data['commands']) == 0:
+            if not data['commands']:
                 await ctx.send(':warning: **There are currently no commands in this bot**')
             else:
                 embed = discord.Embed(title='List of bot commands', description='')

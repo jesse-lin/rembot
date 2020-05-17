@@ -8,7 +8,6 @@ from variables import FILEPATH
 
 from info import botinfo, meminfo
 
-
 def update_bot(bot):
     fp = f'{FILEPATH}/data/bot.json'
     if os.path.exists(fp):
@@ -20,3 +19,6 @@ def update_bot(bot):
             json.dump(data, f, indent=4)
     else:
         botinfo.set_defaults(bot, fp)
+    fp = f'{FILEPATH}/data/mem.json'
+    if not os.path.exists(fp):
+        meminfo.set_defaults(bot, fp)
