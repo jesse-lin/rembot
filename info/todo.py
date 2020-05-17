@@ -96,9 +96,22 @@ class Todo(commands.Cog):
         else:
             if kwargs.startswith('add'):
                 text = kwargs[len('add '):]
-                await add_todo(ctx, guild_id, user, text)
-            elif kwargs.startswith('delete'):
-                text = kwargs[len('delete '):]
-                await del_todo(ctx, guild_id, user, text)
+                if not text:
+                    await ctx.send(":no_entry_sign: **No arguments to add, please try again.**")
+                else:
+                    await add_todo(ctx, guild_id, user, text)
+            elif kwargs.startswith('del'):
+                if kwargs.startswith('delete'):
+                    text = kwargs[len('delete '):]
+                    if not text:
+                        await ctx.send(":no_entry_sign: **Missing arguments, please try again.**")
+                    else:
+                        await del_todo(ctx, guild_id, user, text)
+                elif kwargs.startswith('del '):
+                    text = kwargs[len('del '):]
+                    if not text:
+                        await ctx.send(":no_entry_sign: **Missing arguments, please try again.**")
+                    else:
+                        await del_todo(ctx, guild_id, user, text)
             else:
                 await ctx.send(":no_entry_sign: **Invalid arguments, try again.**")
