@@ -74,8 +74,6 @@ async def list_stocks(ctx, user, tickers):
     embed.add_field(name='Symbols', value=str1, inline=False)
     await ctx.send(embed=embed)
 
-
-
 class MemInfo(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
