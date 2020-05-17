@@ -72,23 +72,26 @@ class Basic(commands.Cog):
             mdata = json.load(fm)
             user = f'{ctx.author.id}'
 
-        if user not in mdata:
-            mdata[user] = dict()
-            mdata[user]['stocks'] = list()
+        ser = f'{ctx.guild.id}'
+        if ser not in mdata:
+            mdata[ser] = dict()
+        if user not in mdata[ser]:
+            mdata[ser][user] = dict()
+            mdata[ser][user]['stocks'] = list()
         with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
             json.dump(mdata, fm, indent=4)
 
         if sym==None:
-            if mdata[user]['stocks']:
-                await load_stocks(ctx, data, mdata[user]['stocks'])
+            if mdata[ser][user]['stocks']:
+                await load_stocks(ctx, data, mdata[ser][user]['stocks'])
             else:
                 with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
                     json.dump(mdata, fm, indent=4)
                 await ctx.send(f':no_entry_sign: **You have no stock symbols saved.**')
 
         elif sym=="list":
-            if mdata[user]['stocks']:
-                tickers = mdata[user]['stocks']
+            if mdata[ser][user]['stocks']:
+                tickers = mdata[ser][user]['stocks']
                 await meminfo.list_stocks(ctx, user, tickers)
             else:
                 with open(f'{FILEPATH}/data/mem.json', 'w') as fm:

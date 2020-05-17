@@ -21,6 +21,7 @@ bot.add_cog(meminfo.MemInfo(bot))
 @bot.event
 async def on_ready():
     default.update_bot(bot)
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.listening, name="!commands"))
     print(f'Logged in as {bot.user.name}{bot.user.id}------')
 
 @bot.event
