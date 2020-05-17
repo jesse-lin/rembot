@@ -74,8 +74,9 @@ class Basic(commands.Cog):
 
         if user not in mdata:
             mdata[user] = dict()
-            if 'stocks' not in mdata[user]:
-                mdata[user]['stocks'] = list()
+            mdata[user]['stocks'] = list()
+        with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
+            json.dump(mdata, fm, indent=4)
 
         if sym==None:
             if mdata[user]['stocks']:

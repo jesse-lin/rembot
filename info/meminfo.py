@@ -39,6 +39,7 @@ async def add_stocks(ctx, user, tickers):
     with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
         json.dump(mdata, fm, indent=4)
     await ctx.send(':white_check_mark: **OK, done.**')
+    await list_stocks(ctx, user, mdata[user]['stocks'])
     
 async def del_stocks(ctx, user, tickers):
     with open(f'{FILEPATH}/data/mem.json', 'r') as fm:
@@ -50,6 +51,7 @@ async def del_stocks(ctx, user, tickers):
     with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
         json.dump(mdata, fm, indent=4)
     await ctx.send(':white_check_mark: **OK, done.**')
+    await list_stocks(ctx, user, mdata[user]['stocks'])
 
 async def clear_stocks(ctx, user):
     with open(f'{FILEPATH}/data/mem.json', 'r') as fm:
