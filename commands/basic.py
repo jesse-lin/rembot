@@ -59,7 +59,11 @@ class Basic(commands.Cog):
             info = dict()
             info['Name'] = 'stock'
             info['Description'] = 'Shows 5-day history for stock symbols.'
-            info['Usage'] = '!stock\n!stock <list of symbols separated by spaces>\n!stock add <list of symbols separated by spaces>\n!stock delete <list of symbols separated by spaces>'
+            usage = "!stock\n!stock list\n" \
+                "!stock <list of symbols separated by spaces>\n" \
+                "!stock add <list of symbols separated by spaces>\n" \
+                "!stock delete <list of symbols separated by spaces>"
+            info['Usage'] = usage
             data['commands']['stock'] = info
             with open(f'{FILEPATH}/data/bot.json', 'w') as f:
                 json.dump(data, f, indent=4)
@@ -68,13 +72,23 @@ class Basic(commands.Cog):
             mdata = json.load(fm)
             user = f'{ctx.author.id}'
 
-        if sym==None:
-            if user not in mdata:
-                mdata[user] = dict()
+        if user not in mdata:
+            mdata[user] = dict()
             if 'stocks' not in mdata[user]:
                 mdata[user]['stocks'] = list()
+
+        if sym==None:
             if mdata[user]['stocks']:
                 await load_stocks(ctx, data, mdata[user]['stocks'])
+            else:
+                with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
+                    json.dump(mdata, fm, indent=4)
+                await ctx.send(f':no_entry_sign: **You have no stock symbols saved.**')
+
+        elif sym=="list":
+            if mdata[user]['stocks']:
+                tickers = mdata[user]['stocks']
+                await meminfo.list_stocks(ctx, user, tickers)
             else:
                 with open(f'{FILEPATH}/data/mem.json', 'w') as fm:
                     json.dump(mdata, fm, indent=4)
@@ -85,15 +99,19 @@ class Basic(commands.Cog):
             if sym.startswith("add"):
                 tickers.pop(0)
                 if not(tickers):
-                    await ctx.send(':no_entry_sign: **Please enter at least one symbol to be added.**')
+                    await ctx.send(":no_entry_sign: **Please enter at least one symbol "
+                        "to be added.**")
                 else:
                     await meminfo.add_stocks(ctx, user, tickers)
             elif sym.startswith("delete"):
                 tickers.pop(0)
                 if not(tickers):
-                    await ctx.send(':no_entry_sign: **Please enter at least one symbol to be added.**')
+                    await ctx.send(":no_entry_sign: **Please enter at least one symbol "
+                        "to be deleted.**")
                 else:
                     await meminfo.del_stocks(ctx, user, tickers)
+            elif sym.startswith("clear"):
+                await meminfo.clear_stocks(ctx, user)
             else:
                 await load_stocks(ctx, data, tickers)
             

@@ -68,7 +68,7 @@ class Fun(commands.Cog):
                 'Morris code',
                 "How y'all corn teen",
                 "The pill ain't workin",
-                "DABOILER DABOILER"
+                "DABOILUH DABOILUH"
             ]
             await ctx.send(f'{random.choice(possible_responses)}')
         else:
@@ -85,6 +85,7 @@ class Fun(commands.Cog):
                 "I ain't gon act like I know",
                 'Aal iz wel',
                 'It is what it is',
-                'When it rains it pours'
+                'When it rains it pours',
+                "See that question is just a suggestion"
             ]
             await ctx.send(f'{random.choice(possible_responses)}')

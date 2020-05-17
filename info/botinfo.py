@@ -33,7 +33,8 @@ async def about(message):
     for key in data['info']:
         embed.add_field(name=f'{key}', value=data['info'][f'{key}'], inline=False)
         # embed.set_image(url="https://i.imgur.com/oNUY7dx.jpg")
-    embed.add_field(name='For more info', value = "Type '!commands' to see commands", inline=False)
+    embed.add_field(name='For more info', value = "Type '!commands' to see commands", 
+        inline=False)
 
     await message.channel.send(content="About me:", embed=embed)
 
@@ -54,7 +55,8 @@ class BotInfo(commands.Cog):
                 embed = discord.Embed(title='List of bot commands', description='')
                 embed.set_thumbnail(url=data['thumbnail'])
                 for key in data['commands']:
-                    embed.add_field(name=f'{key}', value=data['commands'][f'{key}']['Description'], inline=False)
+                    embed.add_field(name=f'{key}', value=data['commands'][f'{key}']['Description'], 
+                        inline=False)
                 await ctx.send(embed=embed)
         else:
             if str1 not in data['commands']:
@@ -63,6 +65,7 @@ class BotInfo(commands.Cog):
                 embed = discord.Embed(title=str1)
                 embed.set_thumbnail(url=data['thumbnail'])
                 for key in data['commands'][f'{str1}']:
-                    embed.add_field(name=f'{key}', value=data['commands'][f'{str1}'][key], inline=False)
+                    embed.add_field(name=f'{key}', value=data['commands'][f'{str1}'][key], 
+                        inline=False)
                 await ctx.send(embed=embed)
 
