@@ -18,7 +18,8 @@ async def list_todo(ctx, guild, user):
             counter = 0
             for entry in mdata[guild][user]['todo']:
                 difference = datetime.datetime.now() - datetime.datetime.strptime(entry['timestamp'], "%Y-%m-%d %H:%M:%S")
-                embed.add_field(name=f'{counter}', value=f"**{entry['value']}**\nAdded {difference.days} days ago", 
+                embed.add_field(name=f'{counter}', 
+                    value=f"**{entry['value']}**\nAdded {difference.days} day(s) ago", 
                     inline=False)
                 counter += 1
             await ctx.send(embed=embed)
