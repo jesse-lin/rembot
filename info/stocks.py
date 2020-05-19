@@ -40,13 +40,14 @@ async def add_stocks(ctx, user, tickers):
     with open(f'{FILEPATH}/data/mem.json', 'r') as fm:
         mdata = json.load(fm)
     guild_id = f'{ctx.guild.id}'
+
     for elem in tickers:
         sym = elem.upper()
         ticker = yf.Ticker(sym)
         info_json = f'{ticker.history(period="5d").to_json()}'
         info_check = json.loads(info_json)
         if info_check["Open"]:
-            if up not in mdata[guild_id][user]['stocks']:
+            if sym not in mdata[guild_id][user]['stocks']:
                 mdata[guild_id][user]['stocks'].append(sym)
                 await ctx.send(f':white_check_mark: **{sym} added.**')
             else:
@@ -163,7 +164,7 @@ class Stocks(commands.Cog):
                         "to be deleted.**")
                 else:
                     await del_stocks(ctx, user, tickers)
-            elif sym.startswith("clear"):
+            elif kwargs.startswith("clear"):
                 await clear_stocks(ctx, user)
             else:
                 await load_stocks(ctx, data, tickers)
