@@ -66,7 +66,7 @@ async def del_stocks(ctx, user, tickers):
     guild_id = f'{ctx.guild.id}'
     for elem in tickers:
         sym = elem.upper()
-        if up in mdata[guild_id][user]['stocks']:
+        if sym in mdata[guild_id][user]['stocks']:
             mdata[guild_id][user]['stocks'].remove(sym)
             await ctx.send(f':white_check_mark: **{sym} removed.**')
         else:
